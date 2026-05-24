@@ -1,31 +1,98 @@
-# Projectile Trajectory
-Projectile trajectory is a common algorithmic concept in gameplay programming. This project is my approach to this
-problem, implemented for 3D space usage using the unity 3D engine. It's design is straightforward and can be
-easily integrated to any project (at least it can...). Followingly is an explanation of the projects main concepts:
+# Projectile Trajectory Simulator
 
-## Project Structure
-There are three main components in order for this solution to be effective:
-* A gun (or the source of the projectile in general), using the ray camera (explained below) in conjunction
-    with the mouse position on screen to aim. A very simple implementation is already provided.
-* A line renderer acting as the trajectory. Just create a line renderer and attach the `Trajectory.cs` script
-    to it. The rest are handled by the script. You can adjust any option fits your needs from the __LineRenderer__
-    component and change the material.
-* A camera. We can use the main camera for this but I prefer to create a new one for this purpose, because
-    we can modify it separately. Since all we need is its rotation data we can lower its depth to -100 and even move
-    it away from the scene so it doesn't render anything and increases our polygon count for no reason.
+A web-based projectile trajectory simulator that demonstrates projectile motion physics with interactive controls.
 
-## Dependencies
-* If the projectile is being shot using the unity engine physics system, you need to add force with the 
-    velocity change force mode, as in the provided script:
-    ```C#
-    g.GetComponent<Rigidbody>().AddForce(g.transform.forward * bulletVelocity, ForceMode.VelocityChange);
-    ```
-* The trajectory works for position coordinates that the `transform.position.y` is above 0. It also works best for coordinates
-    not way above 0. This happens because the arc created starts from a given point until it reaches zero height _(y == 0)_.
-    If you must have your projectile source positioned in great height and the trajectory starts looking flat you have to
-    increase the **resolution** script variable value from the editor until it looks smooth (also increases the overhead of the 
-    calculations). In any other case you have to hack your way around.
+## 🌐 Live Demo
 
-## Other project info
-* Unity version used: 2018.3.3f1
+This project is ready to be deployed on Vercel. Once deployed, users can access it directly from their browser.
 
+## 🚀 Deploy to Vercel
+
+### Option 1: Deploy via Vercel Dashboard (Recommended)
+
+1. Push this repository to GitHub
+2. Go to [vercel.com](https://vercel.com)
+3. Click "New Project"
+4. Import your GitHub repository
+5. Vercel will automatically detect the `vercel.json` configuration
+6. Click "Deploy"
+
+### Option 2: Deploy via Vercel CLI
+
+```bash
+# Install Vercel CLI
+npm install -g vercel
+
+# Login to Vercel
+vercel login
+
+# Deploy
+vercel --prod
+```
+
+## 🎮 Features
+
+- **Interactive Controls**: Adjust velocity, angle, gravity, and launch height
+- **Real-time Visualization**: See the projectile trajectory animated on canvas
+- **Physics Statistics**: View max height, range, and flight time
+- **Multiple Trajectories**: Fire multiple projectiles to compare different settings
+- **Click to Aim**: Click anywhere on the canvas to automatically calculate and fire
+- **Responsive Design**: Works on desktop and mobile devices
+
+## 📊 Physics Parameters
+
+- **Initial Velocity**: 10-100 m/s
+- **Launch Angle**: 0-90 degrees
+- **Gravity**: 1-20 m/s² (default: 9.8 m/s² for Earth)
+- **Launch Height**: 0-100 meters
+
+## 🛠️ Technology Stack
+
+- HTML5 Canvas
+- Vanilla JavaScript
+- CSS3 with modern styling
+
+## 📁 Project Structure
+
+```
+/workspace
+├── web/
+│   └── index.html          # Main application file
+├── vercel.json             # Vercel deployment configuration
+├── README.md               # This file
+└── Assets/                 # Original Unity project assets
+    └── Scripts/            # Original C# scripts
+        ├── Trajectory.cs
+        ├── Gun.cs
+        └── ...
+```
+
+## 🎯 How It Works
+
+The simulator uses the classic projectile motion equations:
+
+- **Horizontal Position**: x = v₀ × cos(θ) × t
+- **Vertical Position**: y = h₀ + v₀ × sin(θ) × t - ½ × g × t²
+
+Where:
+- v₀ = initial velocity
+- θ = launch angle
+- g = gravitational acceleration
+- h₀ = initial height
+- t = time
+
+## 👥 Usage
+
+1. Open the deployed URL in any modern browser
+2. Adjust the sliders to set your desired parameters
+3. Click "Fire Projectile" to launch
+4. Click "Clear Trajectories" to reset
+5. Or simply click on the canvas to aim and fire!
+
+## 📄 License
+
+MIT License
+
+---
+
+**Original Unity Project**: This web version is based on the original Unity projectile trajectory project, reimagined as a standalone web application for easy sharing and deployment.
