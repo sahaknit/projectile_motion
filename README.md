@@ -1,63 +1,31 @@
-# Projectile Motion Simulator
-
-An interactive web-based projectile motion simulation application built with HTML, CSS, and JavaScript.
-
-## Features
-
-- **Physics Simulation**: Realistic projectile motion with adjustable speed and angle
-- **Interactive Controls**: Start, pause, restart, and clear screen functionality
-- **Customization**: 
-  - Adjust speed and angle with increment/decrement buttons
-  - Change colors for ball, floor, background, and path
-  - RGB color picker for custom colors
-  - Upload custom background images or use URLs
-- **Visual Feedback**: Real-time position tracking (X/Y coordinates)
-- **Path Tracing**: Toggle to visualize the projectile trajectory
-
-## Deploy to Vercel
-
-This project is ready to deploy on Vercel:
-
-1. **Install Vercel CLI** (optional):
-   ```bash
-   npm install -g vercel
-   ```
-
-2. **Deploy**:
-   ```bash
-   vercel
-   ```
-   
-   Or simply push to your Git repository and connect it to Vercel at [vercel.com](https://vercel.com)
-
-3. **Access**: Once deployed, users can access the simulator directly through the provided URL
-
-## Local Development
-
-Open `interface/index.html` in a web browser to run locally.
+# Projectile Trajectory
+Projectile trajectory is a common algorithmic concept in gameplay programming. This project is my approach to this
+problem, implemented for 3D space usage using the unity 3D engine. It's design is straightforward and can be
+easily integrated to any project (at least it can...). Followingly is an explanation of the projects main concepts:
 
 ## Project Structure
+There are three main components in order for this solution to be effective:
+* A gun (or the source of the projectile in general), using the ray camera (explained below) in conjunction
+    with the mouse position on screen to aim. A very simple implementation is already provided.
+* A line renderer acting as the trajectory. Just create a line renderer and attach the `Trajectory.cs` script
+    to it. The rest are handled by the script. You can adjust any option fits your needs from the __LineRenderer__
+    component and change the material.
+* A camera. We can use the main camera for this but I prefer to create a new one for this purpose, because
+    we can modify it separately. Since all we need is its rotation data we can lower its depth to -100 and even move
+    it away from the scene so it doesn't render anything and increases our polygon count for no reason.
 
-```
-├── interface/
-│   └── index.html      # Main HTML file
-├── methods/
-│   └── fuction.js      # Physics engine and controls
-├── styles/
-│   └── style.css       # Styling
-├── vercel.json         # Vercel configuration
-└── README.md           # This file
-```
+## Dependencies
+* If the projectile is being shot using the unity engine physics system, you need to add force with the 
+    velocity change force mode, as in the provided script:
+    ```C#
+    g.GetComponent<Rigidbody>().AddForce(g.transform.forward * bulletVelocity, ForceMode.VelocityChange);
+    ```
+* The trajectory works for position coordinates that the `transform.position.y` is above 0. It also works best for coordinates
+    not way above 0. This happens because the arc created starts from a given point until it reaches zero height _(y == 0)_.
+    If you must have your projectile source positioned in great height and the trajectory starts looking flat you have to
+    increase the **resolution** script variable value from the editor until it looks smooth (also increases the overhead of the 
+    calculations). In any other case you have to hack your way around.
 
-## Usage
+## Other project info
+* Unity version used: 2018.3.3f1
 
-1. Click **Set Speed** and use +/- buttons to adjust launch speed
-2. Click **Set Angle** and use +/- buttons to adjust launch angle
-3. Click **Start** to launch the projectile
-4. Use **Pause/Resume** to control the simulation
-5. Toggle **Path** to visualize the trajectory
-6. Use **Set Color** to customize appearance
-
-## License
-
-Free to use and modify.
