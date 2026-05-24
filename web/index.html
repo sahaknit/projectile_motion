@@ -5,12 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projectile Trajectory Simulator</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
@@ -21,499 +16,183 @@
             padding: 20px;
             color: #fff;
         }
-
-        h1 {
-            margin-bottom: 20px;
-            text-align: center;
-            color: #00d9ff;
-            text-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
-        }
-
-        .container {
-            display: flex;
-            gap: 30px;
-            max-width: 1400px;
-            width: 100%;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .canvas-container {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 20px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-
-        canvas {
-            border: 2px solid #00d9ff;
-            border-radius: 10px;
-            background: #0a0a1a;
-            cursor: crosshair;
-        }
-
-        .controls {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 30px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            min-width: 300px;
-            max-width: 400px;
-        }
-
-        .control-group {
-            margin-bottom: 25px;
-        }
-
-        .control-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #00d9ff;
-        }
-
-        .control-group input[type="range"] {
-            width: 100%;
-            height: 8px;
-            border-radius: 4px;
-            background: rgba(255, 255, 255, 0.2);
-            outline: none;
-            -webkit-appearance: none;
-        }
-
-        .control-group input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #00d9ff;
-            cursor: pointer;
-            box-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
-        }
-
-        .value-display {
-            text-align: right;
-            font-size: 14px;
-            color: #aaa;
-            margin-top: 5px;
-        }
-
-        button {
-            width: 100%;
-            padding: 15px;
-            margin-top: 10px;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        #fireBtn {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
-            color: white;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
-        }
-
-        #fireBtn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
-        }
-
-        #clearBtn {
-            background: linear-gradient(135deg, #4ecdc4, #44a08d);
-            color: white;
-            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.4);
-        }
-
-        #clearBtn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(78, 205, 196, 0.6);
-        }
-
-        .info {
-            margin-top: 20px;
-            padding: 15px;
-            background: rgba(0, 217, 255, 0.1);
-            border-radius: 10px;
-            border-left: 4px solid #00d9ff;
-        }
-
-        .info p {
-            font-size: 14px;
-            line-height: 1.6;
-            color: #ccc;
-        }
-
-        .stats {
-            margin-top: 20px;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-        }
-
-        .stat-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .stat-item:last-child {
-            margin-bottom: 0;
-            padding-bottom: 0;
-            border-bottom: none;
-        }
-
-        .stat-label {
-            color: #aaa;
-        }
-
-        .stat-value {
-            color: #00d9ff;
-            font-weight: 600;
-        }
+        h1 { margin-bottom: 20px; text-align: center; color: #00d9ff; text-shadow: 0 0 10px rgba(0, 217, 255, 0.5); }
+        .container { display: flex; gap: 30px; max-width: 1400px; width: 100%; flex-wrap: wrap; justify-content: center; }
+        .canvas-container { background: rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 20px; backdrop-filter: blur(10px); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); }
+        canvas { border: 2px solid #00d9ff; border-radius: 10px; background: #0a0a1a; }
+        .controls { background: rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 25px; backdrop-filter: blur(10px); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); min-width: 300px; }
+        .control-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: #00d9ff; }
+        input[type="range"] { width: 100%; height: 8px; border-radius: 4px; background: rgba(255, 255, 255, 0.2); outline: none; -webkit-appearance: none; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #00d9ff; cursor: pointer; box-shadow: 0 0 10px rgba(0, 217, 255, 0.5); }
+        .value-display { text-align: right; font-size: 14px; color: #aaa; margin-top: 5px; }
+        .stats { background: rgba(0, 0, 0, 0.3); border-radius: 10px; padding: 15px; margin-top: 20px; }
+        .stat-item { display: flex; justify-content: space-between; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .stat-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .stat-label { color: #aaa; }
+        .stat-value { color: #00d9ff; font-weight: bold; }
+        button { width: 100%; padding: 12px; margin-top: 15px; border: none; border-radius: 8px; background: linear-gradient(135deg, #00d9ff, #0099cc); color: #fff; font-size: 16px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 217, 255, 0.3); }
+        button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 217, 255, 0.5); }
+        .info { margin-top: 30px; max-width: 600px; text-align: center; background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 10px; line-height: 1.6; }
+        select { width: 100%; padding: 10px; border-radius: 8px; border: 2px solid #00d9ff; background: rgba(0, 0, 0, 0.3); color: #fff; font-size: 14px; outline: none; }
+        select option { background: #1a1a2e; color: #fff; }
     </style>
 </head>
 <body>
-    <h1>🎯 Projectile Trajectory Simulator</h1>
-    
+    <h1>Projectile Trajectory Simulator</h1>
     <div class="container">
         <div class="canvas-container">
             <canvas id="trajectoryCanvas" width="800" height="600"></canvas>
         </div>
-        
         <div class="controls">
             <div class="control-group">
-                <label for="velocity">Initial Velocity (m/s)</label>
-                <input type="range" id="velocity" min="10" max="100" value="50" step="1">
+                <label for="velocity">Velocity (m/s)</label>
+                <input type="range" id="velocity" min="1" max="100" value="50" step="0.5">
                 <div class="value-display" id="velocityValue">50 m/s</div>
             </div>
-            
             <div class="control-group">
-                <label for="angle">Launch Angle (degrees)</label>
-                <input type="range" id="angle" min="0" max="90" value="45" step="1">
+                <label for="angle">Angle (degrees)</label>
+                <input type="range" id="angle" min="0" max="90" value="45" step="0.5">
                 <div class="value-display" id="angleValue">45°</div>
             </div>
-            
             <div class="control-group">
                 <label for="gravity">Gravity (m/s²)</label>
-                <input type="range" id="gravity" min="1" max="20" value="9.8" step="0.1">
-                <div class="value-display" id="gravityValue">9.8 m/s²</div>
+                <input type="range" id="gravity" min="1" max="20" value="9.81" step="0.01">
+                <div class="value-display" id="gravityValue">9.81 m/s²</div>
             </div>
-            
             <div class="control-group">
                 <label for="height">Launch Height (m)</label>
-                <input type="range" id="height" min="0" max="100" value="0" step="1">
+                <input type="range" id="height" min="0" max="50" value="0" step="0.5">
                 <div class="value-display" id="heightValue">0 m</div>
             </div>
-            
-            <button id="fireBtn">🚀 Fire Projectile</button>
-            <button id="clearBtn">🗑️ Clear Trajectories</button>
-            
-            <div class="stats">
-                <div class="stat-item">
-                    <span class="stat-label">Max Height:</span>
-                    <span class="stat-value" id="maxHeight">0 m</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Range:</span>
-                    <span class="stat-value" id="range">0 m</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Flight Time:</span>
-                    <span class="stat-value" id="flightTime">0 s</span>
-                </div>
+            <div class="control-group">
+                <label for="ballColor">Ball Color</label>
+                <select id="ballColor">
+                    <option value="#00ff00">Green</option>
+                    <option value="#ffff00">Yellow</option>
+                    <option value="#000000">Black</option>
+                    <option value="#0000ff">Blue</option>
+                    <option value="#ff0000">Red</option>
+                </select>
             </div>
-            
-            <div class="info">
-                <p><strong>How to use:</strong></p>
-                <p>Adjust the parameters using the sliders and click "Fire Projectile" to see the trajectory. The simulation shows the path of a projectile under the influence of gravity.</p>
+            <button id="fireBtn">Fire!</button>
+            <button id="clearBtn">Clear Trail</button>
+            <div class="stats">
+                <div class="stat-item"><span class="stat-label">Max Distance:</span><span class="stat-value" id="maxDistance">0 m</span></div>
+                <div class="stat-item"><span class="stat-label">Max Height:</span><span class="stat-value" id="maxHeight">0 m</span></div>
+                <div class="stat-item"><span class="stat-label">Flight Time:</span><span class="stat-value" id="flightTime">0 s</span></div>
+                <div class="stat-item"><span class="stat-label">Current X:</span><span class="stat-value" id="currentX">0 m</span></div>
+                <div class="stat-item"><span class="stat-label">Current Y:</span><span class="stat-value" id="currentY">0 m</span></div>
             </div>
         </div>
     </div>
-
+    <div class="info">
+        <p><strong>How to use:</strong> Adjust velocity, angle, gravity, and launch height. Click "Fire!" to launch a projectile.</p>
+        <p>Uses the same physics equations as your Unity project!</p>
+    </div>
     <script>
         const canvas = document.getElementById('trajectoryCanvas');
         const ctx = canvas.getContext('2d');
+        const width = canvas.width, height = canvas.height;
+        const scale = 8, originX = 50, originY = height - 50;
+        let balls = [], trails = [], animationId = null, ballColor = '#00ff00';
         
-        // Physics constants
-        const SCALE = 5; // 1 meter = 5 pixels
-        const TIME_STEP = 0.05; // seconds
-        
-        // State
-        let trajectories = [];
-        let currentProjectile = null;
-        let animationId = null;
-        
-        // DOM Elements
         const velocitySlider = document.getElementById('velocity');
         const angleSlider = document.getElementById('angle');
         const gravitySlider = document.getElementById('gravity');
         const heightSlider = document.getElementById('height');
         const fireBtn = document.getElementById('fireBtn');
         const clearBtn = document.getElementById('clearBtn');
+        const ballColorSelect = document.getElementById('ballColor');
         
-        // Value displays
-        const velocityValue = document.getElementById('velocityValue');
-        const angleValue = document.getElementById('angleValue');
-        const gravityValue = document.getElementById('gravityValue');
-        const heightValue = document.getElementById('heightValue');
-        
-        // Stats displays
-        const maxHeightDisplay = document.getElementById('maxHeight');
-        const rangeDisplay = document.getElementById('range');
-        const flightTimeDisplay = document.getElementById('flightTime');
-        
-        // Update value displays
         function updateDisplays() {
-            velocityValue.textContent = `${velocitySlider.value} m/s`;
-            angleValue.textContent = `${angleSlider.value}°`;
-            gravityValue.textContent = `${gravitySlider.value} m/s²`;
-            heightValue.textContent = `${heightSlider.value} m`;
+            document.getElementById('velocityValue').textContent = velocitySlider.value + ' m/s';
+            document.getElementById('angleValue').textContent = angleSlider.value + '°';
+            document.getElementById('gravityValue').textContent = parseFloat(gravitySlider.value).toFixed(2) + ' m/s²';
+            document.getElementById('heightValue').textContent = heightSlider.value + ' m';
         }
         
-        // Event listeners for sliders
-        [velocitySlider, angleSlider, gravitySlider, heightSlider].forEach(slider => {
-            slider.addEventListener('input', updateDisplays);
-        });
+        [velocitySlider, angleSlider, gravitySlider, heightSlider].forEach(s => s.addEventListener('input', updateDisplays));
+        ballColorSelect.addEventListener('change', e => ballColor = e.target.value);
         
-        // Calculate trajectory
-        function calculateTrajectory(v0, angle, g, h0) {
-            const angleRad = angle * Math.PI / 180;
-            const v0x = v0 * Math.cos(angleRad);
-            const v0y = v0 * Math.sin(angleRad);
-            
+        function calculateTrajectoryPoints(velocity, angleDeg, gravity, launchHeight, resolution = 100) {
+            const angleRad = angleDeg * Math.PI / 180;
+            const vy = velocity * Math.sin(angleRad), vx = velocity * Math.cos(angleRad);
+            const discriminant = vy * vy + 2 * gravity * launchHeight;
+            const flightTime = (vy + Math.sqrt(discriminant)) / gravity;
+            const maxDistance = vx * flightTime;
+            const timeToMaxHeight = vy / gravity;
+            const maxHeight = launchHeight + (vy * timeToMaxHeight) - (0.5 * gravity * timeToMaxHeight * timeToMaxHeight);
             const points = [];
-            let t = 0;
-            let x = 0;
-            let y = h0;
-            let maxY = h0;
-            
-            while (y >= 0 && t < 100) {
-                x = v0x * t;
-                y = h0 + v0y * t - 0.5 * g * t * t;
-                
-                if (y > maxY) maxY = y;
-                
-                points.push({ x, y });
-                t += TIME_STEP;
+            for (let i = 0; i <= resolution; i++) {
+                const t = (i / resolution) * flightTime;
+                points.push({ x: vx * t, y: launchHeight + (vy * t) - (0.5 * gravity * t * t) });
             }
-            
-            // Calculate stats
-            const totalTime = t - TIME_STEP;
-            const range = x;
-            const maxHeight = maxY;
-            
-            return { points, maxHeight, range, totalTime };
+            return { points, maxDistance, maxHeight, flightTime };
         }
         
-        // Draw grid
         function drawGrid() {
             ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
             ctx.lineWidth = 1;
-            
-            // Vertical lines (every 10 meters)
-            for (let x = 0; x < canvas.width; x += 10 * SCALE) {
-                ctx.beginPath();
-                ctx.moveTo(x, 0);
-                ctx.lineTo(x, canvas.height);
-                ctx.stroke();
-            }
-            
-            // Horizontal lines (every 10 meters)
-            for (let y = canvas.height; y > 0; y -= 10 * SCALE) {
-                ctx.beginPath();
-                ctx.moveTo(0, y);
-                ctx.lineTo(canvas.width, y);
-                ctx.stroke();
-            }
-            
-            // Draw axes
-            ctx.strokeStyle = '#00d9ff';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.moveTo(0, canvas.height - 50);
-            ctx.lineTo(canvas.width, canvas.height - 50);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.moveTo(50, 0);
-            ctx.lineTo(50, canvas.height);
-            ctx.stroke();
+            for (let x = 0; x < width; x += 10 * scale) { ctx.beginPath(); ctx.moveTo(originX + x, 0); ctx.lineTo(originX + x, height); ctx.stroke(); }
+            for (let y = 0; y < height; y += 10 * scale) { ctx.beginPath(); ctx.moveTo(0, originY - y); ctx.lineTo(width, originY - y); ctx.stroke(); }
+            ctx.strokeStyle = '#00d9ff'; ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(originX, 0); ctx.lineTo(originX, height); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(0, originY); ctx.lineTo(width, originY); ctx.stroke();
         }
         
-        // Draw trajectory
-        function drawTrajectory(traj, color, isAnimating = false) {
-            if (traj.points.length < 2) return;
-            
-            ctx.strokeStyle = color;
-            ctx.lineWidth = 3;
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-            
-            ctx.beginPath();
-            const startX = 50 + traj.points[0].x * SCALE;
-            const startY = canvas.height - 50 - traj.points[0].y * SCALE;
-            ctx.moveTo(startX, startY);
-            
-            const endIdx = isAnimating ? traj.currentPoint || traj.points.length : traj.points.length;
-            
-            for (let i = 1; i < endIdx; i++) {
-                const x = 50 + traj.points[i].x * SCALE;
-                const y = canvas.height - 50 - traj.points[i].y * SCALE;
-                ctx.lineTo(x, y);
-            }
-            
-            ctx.stroke();
-            
-            // Draw start point
-            ctx.fillStyle = '#00ff00';
-            ctx.beginPath();
-            ctx.arc(50, canvas.height - 50 - traj.points[0].y * SCALE, 5, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // Draw end point if not animating
-            if (!isAnimating || endIdx >= traj.points.length) {
-                const lastPoint = traj.points[traj.points.length - 1];
-                ctx.fillStyle = '#ff0000';
-                ctx.beginPath();
-                ctx.arc(50 + lastPoint.x * SCALE, canvas.height - 50 - lastPoint.y * SCALE, 5, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-        
-        // Animate projectile
-        function animateProjectile() {
-            if (!currentProjectile) return;
-            
-            currentProjectile.currentPoint = (currentProjectile.currentPoint || 0) + 1;
-            
-            if (currentProjectile.currentPoint >= currentProjectile.traj.points.length) {
-                // Animation complete
-                trajectories.push({
-                    traj: currentProjectile.traj,
-                    color: currentProjectile.color
-                });
-                currentProjectile = null;
-                
-                // Update stats
-                const lastTraj = trajectories[trajectories.length - 1];
-                maxHeightDisplay.textContent = `${lastTraj.traj.maxHeight.toFixed(2)} m`;
-                rangeDisplay.textContent = `${lastTraj.traj.range.toFixed(2)} m`;
-                flightTimeDisplay.textContent = `${lastTraj.traj.totalTime.toFixed(2)} s`;
-            }
-            
-            draw();
-            
-            if (currentProjectile) {
-                animationId = requestAnimationFrame(animateProjectile);
-            }
-        }
-        
-        // Main draw function
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
             drawGrid();
-            
-            // Draw completed trajectories
-            trajectories.forEach(t => {
-                drawTrajectory(t.traj, t.color);
-            });
-            
-            // Draw current projectile
-            if (currentProjectile) {
-                drawTrajectory(currentProjectile.traj, currentProjectile.color, true);
-            }
-        }
-        
-        // Fire projectile
-        function fire() {
-            if (animationId) {
-                cancelAnimationFrame(animationId);
-            }
-            
-            const v0 = parseFloat(velocitySlider.value);
-            const angle = parseFloat(angleSlider.value);
-            const g = parseFloat(gravitySlider.value);
-            const h0 = parseFloat(heightSlider.value);
-            
-            const traj = calculateTrajectory(v0, angle, g, h0);
-            
-            // Generate random color
-            const hue = Math.random() * 360;
-            const color = `hsl(${hue}, 70%, 60%)`;
-            
-            currentProjectile = {
-                traj: traj,
-                color: color,
-                currentPoint: 0
-            };
-            
-            animateProjectile();
-        }
-        
-        // Clear all trajectories
-        function clear() {
-            if (animationId) {
-                cancelAnimationFrame(animationId);
-            }
-            trajectories = [];
-            currentProjectile = null;
-            maxHeightDisplay.textContent = '0 m';
-            rangeDisplay.textContent = '0 m';
-            flightTimeDisplay.textContent = '0 s';
-            draw();
-        }
-        
-        // Event listeners
-        fireBtn.addEventListener('click', fire);
-        clearBtn.addEventListener('click', clear);
-        
-        // Mouse interaction - aim by clicking on canvas
-        canvas.addEventListener('click', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            const clickX = e.clientX - rect.left - 50;
-            const clickY = canvas.height - 50 - (e.clientY - rect.top);
-            
-            if (clickX > 0 && clickY > 0) {
-                const targetX = clickX / SCALE;
-                const targetY = clickY / SCALE;
-                
-                // Calculate angle and velocity to hit target
-                const h0 = parseFloat(heightSlider.value);
-                const g = parseFloat(gravitySlider.value);
-                
-                // Simple calculation: assume 45 degree angle and calculate required velocity
-                const angle = 45;
-                const angleRad = angle * Math.PI / 180;
-                
-                // Solve for velocity using trajectory equation
-                const tanTheta = Math.tan(angleRad);
-                const cos2Theta = Math.cos(angleRad) * Math.cos(angleRad);
-                
-                // y = x*tan(θ) - (g*x²)/(2*v²*cos²(θ))
-                // Solving for v:
-                const v0 = Math.sqrt((g * targetX * targetX) / (2 * cos2Theta * (targetX * tanTheta - (targetY - h0))));
-                
-                if (!isNaN(v0) && isFinite(v0) && v0 <= 100) {
-                    velocitySlider.value = Math.min(Math.max(v0, 10), 100);
-                    angleSlider.value = angle;
-                    updateDisplays();
-                    fire();
+            trails.forEach(trail => {
+                ctx.strokeStyle = 'rgba(0, 217, 255, 0.5)'; ctx.lineWidth = 2; ctx.setLineDash([5, 5]); ctx.beginPath();
+                trail.data.points.forEach((p, i) => { i === 0 ? ctx.moveTo(originX + p.x * scale, originY - p.y * scale) : ctx.lineTo(originX + p.x * scale, originY - p.y * scale); });
+                ctx.stroke(); ctx.setLineDash([]);
+                if (trail.points.length >= 2) {
+                    ctx.strokeStyle = trail.color; ctx.lineWidth = 2; ctx.globalAlpha = 0.6; ctx.beginPath();
+                    trail.points.forEach((p, i) => { i === 0 ? ctx.moveTo(originX + p.x * scale, originY - p.y * scale) : ctx.lineTo(originX + p.x * scale, originY - p.y * scale); });
+                    ctx.stroke(); ctx.globalAlpha = 1.0;
                 }
-            }
+            });
+            balls.forEach((ball, idx) => {
+                ball.time += ball.dt;
+                ball.x = ball.vx * ball.time;
+                ball.y = ball.launchHeight + (ball.vy * ball.time) - (0.5 * ball.gravity * ball.time * ball.time);
+                ball.vy -= ball.gravity * ball.dt;
+                if (ball.y <= 0) { ball.y = 0; ball.active = false; }
+                if (ball.active && ball.time % 0.05 < ball.dt) ball.trail.push({ x: ball.x, y: ball.y });
+                ctx.fillStyle = ball.color; ctx.beginPath(); ctx.arc(originX + ball.x * scale, originY - ball.y * scale, 8, 0, Math.PI * 2); ctx.fill();
+                if (ball.active && idx === 0) {
+                    document.getElementById('currentX').textContent = ball.x.toFixed(2) + ' m';
+                    document.getElementById('currentY').textContent = ball.y.toFixed(2) + ' m';
+                }
+            });
+            balls = balls.filter(b => b.active || b.time < 0.1);
+            animationId = requestAnimationFrame(animate);
+        }
+        
+        fireBtn.addEventListener('click', () => {
+            const velocity = parseFloat(velocitySlider.value), angleDeg = parseFloat(angleSlider.value);
+            const gravity = parseFloat(gravitySlider.value), launchHeight = parseFloat(heightSlider.value);
+            const trajData = calculateTrajectoryPoints(velocity, angleDeg, gravity, launchHeight);
+            document.getElementById('maxDistance').textContent = trajData.maxDistance.toFixed(2) + ' m';
+            document.getElementById('maxHeight').textContent = trajData.maxHeight.toFixed(2) + ' m';
+            document.getElementById('flightTime').textContent = trajData.flightTime.toFixed(2) + ' s';
+            const angleRad = angleDeg * Math.PI / 180;
+            balls.push({ x: 0, y: launchHeight, vx: velocity * Math.cos(angleRad), vy: velocity * Math.sin(angleRad), gravity, launchHeight, time: 0, dt: 0.016, active: true, color: ballColor, trail: [] });
+            trails.push({ data: trajData, color: ballColor, points: [] });
+            if (!animationId) animate();
         });
         
-        // Initial draw
+        clearBtn.addEventListener('click', () => {
+            balls = []; trails = [];
+            ctx.clearRect(0, 0, width, height);
+            ['maxDistance', 'maxHeight', 'flightTime', 'currentX', 'currentY'].forEach(id => document.getElementById(id).textContent = id.includes('Time') ? '0 s' : '0 m');
+        });
+        
         updateDisplays();
-        draw();
+        drawGrid();
+        animate();
     </script>
 </body>
 </html>
